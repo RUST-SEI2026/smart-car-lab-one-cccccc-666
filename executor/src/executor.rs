@@ -30,7 +30,34 @@ impl Executor {
         Executor { pose }
     }
 
-    pub fn execute(&mut self, cmds: &str) {}
+    pub fn execute(&mut self, cmds: &str) {
+        for c in cmds.chars() {
+            match c {
+                'M' => match self.pose.heading {
+                    'N' => self.pose.y += 1,
+                    'S' => self.pose.y -= 1,
+                    'E' => self.pose.x += 1,
+                    'W' => self.pose.x -= 1,
+                    _ => {}
+                },
+                'L' => self.pose.heading = match self.pose.heading {
+                    'N' => 'W',
+                    'W' => 'S',
+                    'S' => 'E',
+                    'E' => 'N',
+                    _ => self.pose.heading,
+                },
+                'R' => self.pose.heading = match self.pose.heading {
+                    'N' => 'E',
+                    'E' => 'S',
+                    'S' => 'W',
+                    'W' => 'N',
+                    _ => self.pose.heading,
+                },
+                _ => {}
+            }
+        }
+    }
 
     pub fn query(&self) -> Pose {
         self.pose
